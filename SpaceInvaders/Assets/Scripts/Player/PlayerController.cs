@@ -40,6 +40,4 @@ public class PlayerController : MonoBehaviour {
             copyBullet.SetActive(true);
         }
     }
-
-
 }

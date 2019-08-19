@@ -5,6 +5,9 @@ using UnityEngine;
 public class BulletBase : MonoBehaviour {
 
     [SerializeField]
+    private PlayerBehaviour player;
+
+    [SerializeField]
     private float bulletSpeed;
     [SerializeField]
     private int bulletDamage;
@@ -34,11 +37,13 @@ public class BulletBase : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (this.gameObject.activeSelf) {
             if (collision.GetComponent<PlayerController>() && !IsPlayerBullet) {
-                Destroy(collision.gameObject);
+                player.GetDamage(bulletDamage);
+                Destroy(this.gameObject);
             }
 
             if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
                 Destroy(collision.gameObject);
+                Destroy(this.gameObject);
             }
         }
     }
