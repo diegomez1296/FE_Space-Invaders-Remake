@@ -44,6 +44,7 @@ public class BulletBase : MonoBehaviour {
             if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
                 Destroy(collision.gameObject);
                 Destroy(this.gameObject);
+                player.AddScore(1);
             }
         }
     }

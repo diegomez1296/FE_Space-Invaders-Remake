@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerBehaviour : CharacterBase {
 
     [SerializeField]
-    private PlayerLifesController playerLifes;
+    private UIController ui;
+
 
     private void Start() {
         HP = 3;
@@ -13,7 +14,13 @@ public class PlayerBehaviour : CharacterBase {
 
     public override void GetDamage(int damage) {
         base.GetDamage(damage);
-        playerLifes.CheckPlayerLifes(HP);
+        ui.PlayerLifes.CheckPlayerLifes(HP);
+        if (HP <= 0)
+            ui.ActivateGameOverText();
+    }
+
+    public void AddScore(int newScore) {
+        ui.Score.AddScoreValue(newScore);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

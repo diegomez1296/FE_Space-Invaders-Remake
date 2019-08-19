@@ -51,7 +51,6 @@ public class EnemyBehaviour : MonoBehaviour {
     private float ShootTime() {
         float shootTime = Random.Range(1, 5);
         actualTime = shootTime;
-        //Debug.Log($"shootTime: {shootTime}");
         return shootTime;
     }
 
