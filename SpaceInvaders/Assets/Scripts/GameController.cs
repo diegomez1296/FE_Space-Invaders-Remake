@@ -13,18 +13,13 @@ public class GameController : MonoBehaviour
     void Start()
     {
         GameLevel = 1;
-        EnemyKills = 10;
+        EnemyKills = 0;
     }
 
     public static void AddEnemyKills() {
         EnemyKills += 1;
-        Debug.Log(EnemyKills);
 
-        if (GameLevel * GameLevel * 5 >= EnemyKills)
+        if (GameLevel * GameLevel * 5 <= EnemyKills)
             GameLevel++;
-    }
-
-    public static int GetEnemyKills() {
-        return EnemyKills;
     }
 }

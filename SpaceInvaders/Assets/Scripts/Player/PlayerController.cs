@@ -27,8 +27,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Moving() {
-        spaceshipPosition.x += Input.GetAxis("Horizontal") * spaceshipSpeed;
-        spaceshipPosition.y += Input.GetAxis("Vertical") * spaceshipSpeed;
+        if (!AplicationController.isMouseControl) {
+            spaceshipPosition.x += Input.GetAxis("Horizontal") * spaceshipSpeed;
+            spaceshipPosition.y += Input.GetAxis("Vertical") * spaceshipSpeed;
+        }
+        else
+            spaceshipPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) * (spaceshipSpeed  + 0.2f);
 
         spaceshipPosition.x = Mathf.Clamp(spaceshipPosition.x, minX, maxX);
         spaceshipPosition.y = Mathf.Clamp(spaceshipPosition.y, minY, maxY);

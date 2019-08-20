@@ -30,7 +30,7 @@ public class EnemyBehaviour : CharacterBase {
 
     public override void GetDamage(int damage) {
         base.GetDamage(damage);
-        if (HP < 0)
+        if (HP <= 0)
             GameController.AddEnemyKills();
     }
 

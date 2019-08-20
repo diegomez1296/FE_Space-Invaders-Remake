@@ -17,9 +17,11 @@ public abstract class CharacterBase : MonoBehaviour
         {
             explosionFX = Instantiate(explosionEffect, transform.position + explosionOffset, Quaternion.identity) as GameObject;
             Destroy(this.gameObject);
+            Destroy(explosionFX, 5.0f);
         }
-        else
+        else {
             explosionFX = Instantiate(explosionEffect, transform.position + explosionOffset, Quaternion.identity, this.transform) as GameObject;
-
+            Destroy(explosionFX, 5.0f);
+        }
     }
 }
