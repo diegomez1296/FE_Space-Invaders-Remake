@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GameObject playerBullet;
     private Vector3 spaceshipPosition;
+    private Vector3 startPosition; 
 
     // Start is called before the first frame update
     private void Start() {
         spaceshipPosition = this.gameObject.transform.position;
+        startPosition = spaceshipPosition;
     }
 
     // Update is called once per frame
@@ -39,5 +41,10 @@ public class PlayerController : MonoBehaviour {
             var copyBullet = Instantiate(playerBullet, spaceshipPosition, new Quaternion(0, 0, 180, 1));
             copyBullet.SetActive(true);
         }
+    }
+
+    public void SetStartPosition() {
+        spaceshipPosition = startPosition;
+        this.gameObject.transform.position = startPosition;
     }
 }

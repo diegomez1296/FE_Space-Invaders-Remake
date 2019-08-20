@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyBehaviour : MonoBehaviour {
+public class EnemyBehaviour : CharacterBase {
 
     [SerializeField]
     private bool isShooting;
@@ -20,11 +20,18 @@ public class EnemyBehaviour : MonoBehaviour {
     // Start is called before the first frame update
     private void Start() {
         actualTime = ShootTime();
+        HP = 1;
     }
 
     private void FixedUpdate() {
         if (isMoving) Moving();
         if (isShooting) Shooting();
+    }
+
+    public override void GetDamage(int damage) {
+        base.GetDamage(damage);
+        if (HP < 0)
+            GameController.AddEnemyKills();
     }
 
     private void Shooting() {

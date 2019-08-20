@@ -42,9 +42,10 @@ public class BulletBase : MonoBehaviour {
             }
 
             if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
-                Destroy(collision.gameObject);
+                var enemy = collision.GetComponent<EnemyBehaviour>();
+                enemy.GetDamage(bulletDamage);
                 Destroy(this.gameObject);
-                player.AddScore(1);
+                player.AddScore();
             }
         }
     }
