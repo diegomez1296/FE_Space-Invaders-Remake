@@ -5,9 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class AplicationController : MonoBehaviour
 {
-    public void StartButtonClick() 
+    public void LoadScene(int sceneIndex) 
     {
-        SceneManager.LoadScene("Game");
+        switch (sceneIndex)
+        {
+            case 0:
+                SceneManager.LoadScene("Menu");
+                break;
+            case 1:
+                SceneManager.LoadScene("Game");
+                break;
+        }    
     }
 
     public void ExitButtonClick() 

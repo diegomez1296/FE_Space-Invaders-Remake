@@ -7,10 +7,10 @@ public class PlayerBehaviour : CharacterBase {
     [SerializeField]
     private UIController ui;
 
-
     private void Start() {
         HP = 3;
     }
+
 
     public override void GetDamage(int damage) {
         base.GetDamage(damage);
@@ -18,6 +18,9 @@ public class PlayerBehaviour : CharacterBase {
         if (HP <= 0)
             ui.ActivateGameOverText();
     }
+    //GameObject explosionFX = Instantiate(explosionEffect, transform.position, Quaternion.identity) as GameObject;
+    //Destroy(explosionFX, 5.0f);
+    //explosionEffect.Play();
 
     public void AddScore(int newScore) {
         ui.Score.AddScoreValue(newScore);
