@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GameObject playerBullet;
     private Vector3 spaceshipPosition;
-    private Vector3 startPosition; 
+    private Vector3 startPosition;
 
     // Start is called before the first frame update
     private void Start() {

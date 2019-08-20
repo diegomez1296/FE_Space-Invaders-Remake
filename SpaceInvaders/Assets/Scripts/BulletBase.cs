@@ -9,6 +9,7 @@ public class BulletBase : MonoBehaviour {
 
     [SerializeField]
     private float bulletSpeed;
+    public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
     [SerializeField]
     private int bulletDamage;
     [SerializeField]
@@ -46,6 +47,7 @@ public class BulletBase : MonoBehaviour {
                 enemy.GetDamage(bulletDamage);
                 Destroy(this.gameObject);
                 player.AddScore();
+                player.CheckLevelUI();
             }
         }
     }

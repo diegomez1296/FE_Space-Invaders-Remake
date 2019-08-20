@@ -39,6 +39,7 @@ public class EnemyBehaviour : CharacterBase {
         if (actualTime <= 0) {
             var copyEnemyBullet = Instantiate(enemyBullet, enemyPosition, new Quaternion(0, 0, 0, 1));
             copyEnemyBullet.SetActive(true);
+            copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed *= GameController.GameLevel; 
             ShootTime();
         }
         else {

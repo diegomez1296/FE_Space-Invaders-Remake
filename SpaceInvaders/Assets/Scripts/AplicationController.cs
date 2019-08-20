@@ -6,13 +6,18 @@ using UnityEngine.UI;
 
 public class AplicationController : MonoBehaviour
 {
-    public static bool isMouseControl = true;
+    public static bool isMouseControl = false;
     [SerializeField]
     private Image controlButtonImage;
     [SerializeField]
     private Sprite mouseIcon;
     [SerializeField]
     private Sprite keyboardIcon;
+
+    private void FixedUpdate() {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            LoadScene(0);
+    }
 
     public void LoadScene(int sceneIndex) 
     {
