@@ -7,14 +7,11 @@ public class PlayerBehaviour : CharacterBase {
     [SerializeField]
     private UIController ui;
     [SerializeField]
-    private GameController gameController;
-    [SerializeField]
     private GameObject shield;
 
     private void Start() {
         HP = 3;
     }
-
 
     public override void GetDamage(int damage) {
         if (!shield.activeSelf) {

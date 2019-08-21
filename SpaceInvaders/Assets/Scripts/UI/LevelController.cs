@@ -16,6 +16,7 @@ public class LevelController : MonoBehaviour
         if(level != GameController.GameLevel) {
             level = GameController.GameLevel;
             levelValue.text = "" + level;
+            GetComponentInParent<UIController>().SetSliderValues(GameController.GameLevel * GameController.GameLevel * 5 - GameController.EnemyKills);
         }
     }
 }

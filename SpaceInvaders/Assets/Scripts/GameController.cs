@@ -8,23 +8,24 @@ public class GameController : MonoBehaviour {
     public static int EnemyKills;
 
     [SerializeField]
+    private PlayerController playerController;
+    [SerializeField]
     private GameObject enemy;
     [HideInInspector]
     public List<GameObject> listOfEnemy;
     [SerializeField]
     private WaveController waveController;
 
-    //GL^2 * 5
+    //GL^2 * 50
 
-    // Start is called before the first frame update
     void Awake() {
         GameLevel = 1;
         EnemyKills = 0;
     }
 
     private void Start() {
-        waveController.ShowWaveText();
-        StartWave();
+        StartCoroutine(ActivateNewWave());
+        InvokeRepeating("CheckEnemies", 5.0f, 5.0f);
     }
 
     public static void AddEnemyKills() {
@@ -34,36 +35,35 @@ public class GameController : MonoBehaviour {
             GameLevel++;
     }
 
-    private void FixedUpdate() {
+    private void CheckEnemies() {
 
-        bool isNewWave = true;
+        bool time4NewWave = true;
 
         foreach (var item in listOfEnemy) {
             if (item != null) {
-                isNewWave = false;
+                time4NewWave = false;
                 break;
             }
         }
 
-        if(isNewWave) {
-            listOfEnemy.Clear();
-            waveController.ShowWaveText();
-            StartWave();
-        }
-
+        if(time4NewWave)
+            SetNewWave();
+    }
+    private void SetNewWave()
+    {
+        StartCoroutine(ActivateNewWave());
     }
 
-
-    public void StartWave() {
+    private void InitEnemiesWave() {
 
         float x = -7;
         float y = 4;
+        listOfEnemy.Clear();
         for (int j = 0; j < 4; j++) {
 
             for (int i = 0; i < 10; i++) {
                 var enemyCopy = Instantiate(enemy, enemy.transform.parent);
                 enemyCopy.transform.position = new Vector3(x, y, 0);
-                enemyCopy.SetActive(true);
 
                 x += 1.5f;
                 listOfEnemy.Add(enemyCopy);
@@ -71,5 +71,29 @@ public class GameController : MonoBehaviour {
             x = -7;
             y -= 1f;
         }
+    }
+
+    private void ActivateEnemies()
+    {
+        foreach (var item in listOfEnemy)
+        {
+            if (item != null)
+            {
+                item.GetComponent<EnemyBehaviour>().ActivateEnemy(true);
+                item.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private IEnumerator ActivateNewWave()
+    {
+        playerController.IsShooting = false;
+        waveController.ShowWaveText();
+        InitEnemiesWave();
+        yield return new WaitForSeconds(3f);
+        waveController.HideWaveText();
+        ActivateEnemies();
+        playerController.IsShooting = true;
+
     }
 }

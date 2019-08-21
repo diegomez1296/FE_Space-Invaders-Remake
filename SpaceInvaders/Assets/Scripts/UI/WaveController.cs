@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,12 +19,9 @@ public class WaveController : MonoBehaviour
         wave++;
         waveValue.text = wave + "";
         this.gameObject.SetActive(true);
-        StartCoroutine(WaveText());
     }
 
-    private IEnumerator WaveText() {
-
-        yield return new WaitForSeconds(2.0f);
+    public void HideWaveText() {
         this.gameObject.SetActive(false);
     }
 }

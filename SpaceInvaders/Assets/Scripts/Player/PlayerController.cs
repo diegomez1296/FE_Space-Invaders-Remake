@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour {
 
     private float maxX = 10.0f, minX = -10.0f, maxY = 7.0f, minY = -7.0f;
 
+    public bool IsShooting { get; set; }
+    public bool IsMoving { get; set; }
+
     [SerializeField]
     private float spaceshipSpeed;
 
@@ -16,14 +19,21 @@ public class PlayerController : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
+        IsMoving = true;
+        IsShooting = true;
         spaceshipPosition = this.gameObject.transform.position;
         startPosition = spaceshipPosition;
     }
 
     // Update is called once per frame
-    private void FixedUpdate() {
-        Moving();
-        Shooting();
+    private void FixedUpdate()
+    {
+        if (IsMoving) Moving();
+
+    }
+    private void Update()
+    {
+        if (IsShooting) Shooting();
     }
 
     private void Moving() {
