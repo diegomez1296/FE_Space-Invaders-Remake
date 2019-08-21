@@ -1,10 +1,10 @@
 - Random Formation
 - Formation movement
 - Bounds
-- Score (nickname in menu)
++ Score (nickname in menu)
 - Boss
 - new buttons in menu
-- save for options
++ save for options
 - Bonuses (HP, double weapon)
 #
 -Save

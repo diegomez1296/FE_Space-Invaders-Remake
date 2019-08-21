@@ -3,10 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using System.IO;
+using System;
+using System.Text;
+using System.Linq;
 
 public class AplicationController : MonoBehaviour
 {
     public static bool isMouseControl = false;
+    [SerializeField]
+    private GameObject highScorePanel;
+    [SerializeField]
+    private TMP_InputField inputNickName;
     [SerializeField]
     private Image controlButtonImage;
     [SerializeField]
@@ -14,9 +23,18 @@ public class AplicationController : MonoBehaviour
     [SerializeField]
     private Sprite keyboardIcon;
 
-    private void FixedUpdate() {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            LoadScene(0);
+    //FileIO
+    private static string Path;
+    private static StringBuilder fileText;
+
+    private void Start() {
+        LoadFile();
+    }
+
+    private void OnLevelWasLoaded() {
+        SetControlImage();
+        inputNickName.text = GameController.NickName;
+        Cursor.visible = true;
     }
 
     public void LoadScene(int sceneIndex) 
@@ -25,13 +43,38 @@ public class AplicationController : MonoBehaviour
         {
             case 0:
                 SceneManager.LoadScene("Menu");
+                SetControlImage();
                 Cursor.visible = true;
                 break;
             case 1:
                 SceneManager.LoadScene("Game");
+                GameController.NickName = ValidateNickName();
                 Cursor.visible = false;
                 break;
         }    
+    }
+
+    private void ClearScoreRecords() {
+        foreach (var item in highScorePanel.GetComponentsInChildren<ScoreRecord>()) {
+            if (item.gameObject.activeSelf)
+                Destroy(item.gameObject);
+        }
+    }
+
+    public void HighScoresClick() {
+
+        ClearScoreRecords();
+
+        highScorePanel.SetActive(true);
+        highScorePanel.GetComponentInChildren<ScoreBoxController>().SetHighScores(GetSortedListOfPlayerScores());
+    }
+
+    public void ClearHighScores() {
+        if (File.Exists(Path)) {
+            File.WriteAllText(Path, "");
+        }
+
+        ClearScoreRecords();
     }
 
     public void ExitButtonClick() 
@@ -41,9 +84,66 @@ public class AplicationController : MonoBehaviour
 
     public void ChangeControl() {
         isMouseControl = !isMouseControl;
+        SetControlImage();
+    }
+
+    private string ValidateNickName() {
+        string text_orig = inputNickName.text;
+
+        string text_v1 = text_orig.Replace(';', ' ');
+        string text_v2 = text_v1.Replace('#', ' ');
+
+        return text_v2;
+    }
+
+    private void SetControlImage() {
         if (isMouseControl)
             controlButtonImage.sprite = mouseIcon;
         else
             controlButtonImage.sprite = keyboardIcon;
+    }
+
+    public static void SaveScore(PlayerScore playerScore) {
+
+        if (File.Exists(Path)) {
+            fileText.Append(playerScore.ToString());
+            string write = fileText.ToString();
+            File.WriteAllText(Path, write);
+        }
+    }
+
+    private void LoadFile() {
+
+        Path = Application.dataPath + "/Resources/scores.txt";
+
+        fileText = new StringBuilder("");
+
+        if (File.Exists(Path)) {
+
+            string read = File.ReadAllText(Path);
+            fileText.Append(read);
+        }
+        else File.Create(Path);
+    }
+
+    private List<PlayerScore> GetSortedListOfPlayerScores() {
+
+        List<PlayerScore> listOfPlayerScores = new List<PlayerScore>();
+
+        LoadFile();
+
+        string allText = fileText.ToString();
+        string[] dataRecord = allText.Split('#');
+
+        for (int i = 0; i < dataRecord.Length - 1; i++) {
+            if (dataRecord[i] != null || dataRecord[i] != "") {
+                string[] scoreRecordText = dataRecord[i].Split(';');
+                listOfPlayerScores.Add(new PlayerScore(scoreRecordText[0], scoreRecordText[1], scoreRecordText[2]));
+            }
+        }
+        listOfPlayerScores.Sort((p, q) => p.Score.CompareTo(q.Score));
+        var sortedlist = listOfPlayerScores.OrderByDescending(x => x.Score).ToList();
+
+        return sortedlist;
     }
 }

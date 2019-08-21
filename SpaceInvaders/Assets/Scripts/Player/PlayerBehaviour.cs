@@ -19,7 +19,8 @@ public class PlayerBehaviour : CharacterBase {
             ui.PlayerLifes.CheckPlayerLifes(HP);
             if (HP <= 0) {
                 ui.ActivateGameOverText();
-                Debug.Log("Enemy killed: " + GameController.EnemyKills);
+                if(GameController.NickName != "")
+                    AplicationController.SaveScore(new PlayerScore(GameController.NickName, GameController.GameLevel+"", ui.Score.score+""));
             }
             else {
                 this.GetComponent<PlayerController>().SetStartPosition();
@@ -27,16 +28,15 @@ public class PlayerBehaviour : CharacterBase {
             }
         }
     }
-    //GameObject explosionFX = Instantiate(explosionEffect, transform.position, Quaternion.identity) as GameObject;
-    //Destroy(explosionFX, 5.0f);
-    //explosionEffect.Play();
 
     public void AddScore() {
-        ui.Score.AddScoreValue(GameController.GameLevel);
+        if(HP>0)
+            ui.Score.AddScoreValue(GameController.GameLevel);
     }
 
     public void CheckLevelUI() {
-        ui.Level.CheckUILevelValue();
+        if (HP > 0)
+            ui.Level.CheckUILevelValue();
     }
 
 
@@ -53,4 +53,6 @@ public class PlayerBehaviour : CharacterBase {
         yield return new WaitForSeconds(shieldTime);
         shield.SetActive(false);
     }
+
+    
 }
