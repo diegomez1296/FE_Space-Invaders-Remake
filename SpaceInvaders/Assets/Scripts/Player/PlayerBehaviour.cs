@@ -29,9 +29,13 @@ public class PlayerBehaviour : CharacterBase {
         }
     }
 
-    public void AddScore() {
-        if(HP>0)
-            ui.Score.AddScoreValue(GameController.GameLevel);
+    public void AddScore(bool isBoss) {
+        if (HP > 0) {
+            if (!isBoss)
+                ui.Score.AddScoreValue(GameController.GameLevel);
+            else
+                ui.Score.AddScoreValue(GameController.GameLevel*100);
+        }
     }
 
     public void CheckLevelUI() {

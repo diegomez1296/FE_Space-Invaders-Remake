@@ -7,17 +7,17 @@ using UnityEngine;
 public class WaveController : MonoBehaviour
 {
     private TextMeshProUGUI waveValue;
-    private int wave;
+    public int Wave { get; set; }
 
     private void Start() {
-        wave = 0;
+        Wave = 0;
         waveValue = GetComponentsInChildren<TextMeshProUGUI>()[1];
         this.gameObject.SetActive(false);
     }
 
     public void ShowWaveText() {
-        wave++;
-        waveValue.text = wave + "";
+        Wave++;
+        waveValue.text = Wave + "";
         this.gameObject.SetActive(true);
     }
 

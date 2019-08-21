@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour {
     private PlayerController playerController;
     [SerializeField]
     private GameObject enemy;
+    [SerializeField]
+    private GameObject boss;
     [HideInInspector]
     public List<GameObject> listOfEnemy;
     [SerializeField]
@@ -26,7 +28,7 @@ public class GameController : MonoBehaviour {
     }
 
     private void Start() {
-        StartCoroutine(ActivateNewWave());
+        StartCoroutine(ActivateNewWave(waveController.Wave+1)); //Wave+1
         InvokeRepeating("CheckEnemies", 5.0f, 5.0f);
     }
 
@@ -58,7 +60,7 @@ public class GameController : MonoBehaviour {
     }
     private void SetNewWave()
     {
-        StartCoroutine(ActivateNewWave());
+        StartCoroutine(ActivateNewWave(waveController.Wave+1));
     }
 
     private void InitEnemiesWave() {
@@ -80,6 +82,17 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    private void InitBoss() {
+
+        float x = -7;
+        float y = 3;
+        listOfEnemy.Clear();
+        var bossCopy = Instantiate(boss, boss.transform.parent);
+        bossCopy.GetComponent<BossBehavior>().HP = GameLevel;
+        bossCopy.transform.position = new Vector3(x, y, 0);
+        listOfEnemy.Add(bossCopy);
+    }
+
     private void ActivateEnemies()
     {
         foreach (var item in listOfEnemy)
@@ -92,11 +105,12 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private IEnumerator ActivateNewWave()
+    private IEnumerator ActivateNewWave(int waveNumber)
     {
         playerController.IsShooting = false;
         waveController.ShowWaveText();
-        InitEnemiesWave();
+        if (waveNumber % 3 != 0) InitEnemiesWave();
+        else InitBoss();
         yield return new WaitForSeconds(3f);
         waveController.HideWaveText();
         ActivateEnemies();

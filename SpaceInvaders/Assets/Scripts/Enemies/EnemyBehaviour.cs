@@ -5,49 +5,50 @@ using UnityEngine.UI;
 
 public class EnemyBehaviour : CharacterBase {
 
-    private enum RandOption { SHOT_TIME, BULLET_SPEED}
+    protected enum RandOption { SHOT_TIME, BULLET_SPEED}
+
+    public bool IsBoss { get; set; }
 
     [SerializeField]
-    private bool isMoving;
+    protected bool isMoving;
     [SerializeField]
-    private bool isMortal;
+    protected bool isMortal;
     [SerializeField]
-    private bool isShooting;
+    protected bool isShooting;
     [SerializeField]
-    private float enemySpeed;
+    protected float enemySpeed;
     [SerializeField]
-    private GameObject enemyBullet;
+    protected GameObject enemyBullet;
     [SerializeField]
-    private Slider slider;
+    protected Slider slider;
 
-    private Vector3 enemyPosition;
-    private float actualTime;
+    protected Vector3 enemyPosition;
+    protected float actualTime;
 
     // Start is called before the first frame update
-    private void Start() {
+    protected virtual void Start() {
         actualTime = ShootTime();
         HP = 1;
+        IsBoss = false;
     }
 
-    private void FixedUpdate() {
+    protected void FixedUpdate() {
         if (isMoving) Moving();
         if (isShooting) Shooting();
     }
 
     public override void GetDamage(int damage) {
-        if (isMortal)
-        {
+        Debug.Log("HP:" + HP);
+        if (isMortal) {
             base.GetDamage(damage);
-            if (HP <= 0)
-            {
+            if (HP <= 0) {
                 GameController.AddEnemyKills();
                 slider.value++;
             }
-        
         }
     }
 
-    private void Shooting() {
+    protected virtual void Shooting() {
 
         if (actualTime <= 0) {
             var copyEnemyBullet = Instantiate(enemyBullet, enemyPosition, new Quaternion(0, 0, 0, 1));
@@ -60,20 +61,20 @@ public class EnemyBehaviour : CharacterBase {
             actualTime -= Time.deltaTime;
     }
 
-    private void Moving() {
+    protected virtual void Moving() {
         this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
         enemyPosition = this.gameObject.transform.position;
         if (enemyPosition.x > 10 || enemyPosition.x < -10)
             enemySpeed *= -1;
     }
 
-    private float ShootTime() {
+    protected float ShootTime() {
         float shootTime = GetRandomValue(RandOption.SHOT_TIME);
         actualTime = shootTime;
         return shootTime;
     }
 
-    private float GetRandomValue(RandOption option)
+    protected virtual float GetRandomValue(RandOption option)
     {
         switch (option)
         {

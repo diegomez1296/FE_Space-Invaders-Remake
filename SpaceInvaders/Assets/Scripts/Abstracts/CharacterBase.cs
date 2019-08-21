@@ -6,15 +6,14 @@ public abstract class CharacterBase : MonoBehaviour
 {
     [SerializeField]
     private GameObject explosionEffect;
-    [SerializeField]
+    [HideInInspector]
     private Vector3 explosionOffset;
     public int HP { get; set; }
 
     public virtual void GetDamage(int damage) {
         HP -= damage;
         GameObject explosionFX;
-        if (HP <= 0)
-        {
+        if (HP <= 0) {
             explosionFX = Instantiate(explosionEffect, transform.position + explosionOffset, Quaternion.identity) as GameObject;
             Destroy(this.gameObject);
             Destroy(explosionFX, 5.0f);
