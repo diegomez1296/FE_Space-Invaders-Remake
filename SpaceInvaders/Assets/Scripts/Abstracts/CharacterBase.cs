@@ -8,7 +8,7 @@ public abstract class CharacterBase : MonoBehaviour
     private GameObject explosionEffect;
     [HideInInspector]
     private Vector3 explosionOffset;
-    public int HP { get; set; }
+    public int HP;
 
     public virtual void GetDamage(int damage) {
         HP -= damage;

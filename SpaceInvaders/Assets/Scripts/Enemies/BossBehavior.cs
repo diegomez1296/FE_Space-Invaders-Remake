@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BossBehavior : EnemyBehaviour {
 
+    [SerializeField]
+    private SpriteRenderer healthSprite;
+    private int maxHP;
+
     protected override void Start() {
         base.Start();
         IsBoss = true;
@@ -33,6 +37,7 @@ public class BossBehavior : EnemyBehaviour {
 
     protected override void Moving() {
         base.Moving();
+        //https://youtu.be/rhoQd6IAtDo
     }
 
     protected override void Shooting() {
@@ -48,5 +53,27 @@ public class BossBehavior : EnemyBehaviour {
         }
         else
             actualTime -= Time.deltaTime;
+    }
+
+    public override void GetDamage(int damage) {
+        base.GetDamage(damage);
+
+        float healthFract = HP / (float)maxHP;
+        if (healthFract > 0.66f) {
+            healthSprite.color = Color.green;
+            return;
+        }
+
+        if (healthFract > 0.33f) {
+            healthSprite.color = Color.yellow;
+            return;
+        }
+
+        healthSprite.color = Color.red;
+    }
+
+    public override void ActivateEnemy(bool isActive, bool isBoss) {
+        base.ActivateEnemy(isActive, isBoss);
+        maxHP = HP;
     }
 }

@@ -3,7 +3,7 @@
 - Bounds
 + Score (nickname in menu)
 - Boss
-- new buttons in menu
++ new buttons in menu
 + save for options
 - Bonuses (HP, double weapon)
 #

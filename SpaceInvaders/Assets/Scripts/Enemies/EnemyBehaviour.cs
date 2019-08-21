@@ -28,7 +28,6 @@ public class EnemyBehaviour : CharacterBase {
     // Start is called before the first frame update
     protected virtual void Start() {
         actualTime = ShootTime();
-        HP = 1;
         IsBoss = false;
     }
 
@@ -38,7 +37,6 @@ public class EnemyBehaviour : CharacterBase {
     }
 
     public override void GetDamage(int damage) {
-        Debug.Log("HP:" + HP);
         if (isMortal) {
             base.GetDamage(damage);
             if (HP <= 0) {
@@ -98,11 +96,17 @@ public class EnemyBehaviour : CharacterBase {
         }     
     }
 
-    public void ActivateEnemy(bool isActive)
+    public virtual void ActivateEnemy(bool isActive, bool isBoss)
     {
         isMoving = isActive;
         isMortal = isActive;
         isShooting = isActive;
-    }
+
+        if (isBoss)
+            HP = GameController.GameLevel;
+        else
+            HP = (GameController.GameLevel / 5) + 1;
+        }
+    
 
 }

@@ -88,18 +88,20 @@ public class GameController : MonoBehaviour {
         float y = 3;
         listOfEnemy.Clear();
         var bossCopy = Instantiate(boss, boss.transform.parent);
-        bossCopy.GetComponent<BossBehavior>().HP = GameLevel;
         bossCopy.transform.position = new Vector3(x, y, 0);
         listOfEnemy.Add(bossCopy);
     }
 
-    private void ActivateEnemies()
+    private void ActivateEnemies(bool isBoss)
     {
         foreach (var item in listOfEnemy)
         {
             if (item != null)
             {
-                item.GetComponent<EnemyBehaviour>().ActivateEnemy(true);
+                if (!isBoss)
+                    item.GetComponent<EnemyBehaviour>().ActivateEnemy(true, false);
+                else
+                    item.GetComponent<BossBehavior>().ActivateEnemy(true, true);
                 item.gameObject.SetActive(true);
             }
         }
@@ -113,7 +115,8 @@ public class GameController : MonoBehaviour {
         else InitBoss();
         yield return new WaitForSeconds(3f);
         waveController.HideWaveText();
-        ActivateEnemies();
+        if (waveNumber % 3 != 0) ActivateEnemies(false);
+        else ActivateEnemies(true);
         playerController.IsShooting = true;
 
     }
