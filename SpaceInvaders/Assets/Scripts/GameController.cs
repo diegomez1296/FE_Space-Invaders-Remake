@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
     public static string NickName;
     public static int GameLevel;
     public static int EnemyKills;
+    public static bool GameIsRunning;
 
     [SerializeField]
     private PlayerController playerController;
@@ -26,6 +27,7 @@ public class GameController : MonoBehaviour {
     void Awake() {
         GameLevel = 1;
         EnemyKills = 0;
+        GameIsRunning = true;
     }
 
     private void Start() {
@@ -37,7 +39,7 @@ public class GameController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene("Menu");
 
-        enemyFormationController.CheckFormations(new int[] { 10, 20, 30}, -7, 4, 1.5f, -1);
+        //enemyFormationController.CheckFormations(new int[] { 10, 20, 30}, -7, 4, 1.5f, -1);
     }
 
     public static void AddEnemyKills() {

@@ -18,17 +18,17 @@ public class BossBehavior : EnemyBehaviour {
     protected override float GetRandomValue(RandOption option) {
         switch (option) {
             case RandOption.SHOT_TIME:
-                if (GameController.GameLevel >= 10)
+                if (GameController.GameLevel >= 16)
                     return Random.Range(0.25f, 0.5f);
-                else if (GameController.GameLevel >= 5)
+                else if (GameController.GameLevel >= 8)
                     return Random.Range(0.5f, 1.0f);
                 else
                     return Random.Range(1.0f, 1.5f);
 
             case RandOption.BULLET_SPEED:
-                if (GameController.GameLevel >= 10)
+                if (GameController.GameLevel >= 16)
                     return Random.Range(0.1f, 0.15f);
-                else if (GameController.GameLevel >= 5)
+                else if (GameController.GameLevel >= 8)
                     return Random.Range(0.05f, 0.1f);
                 else
                     return Random.Range(0, 0.05f);
@@ -38,11 +38,13 @@ public class BossBehavior : EnemyBehaviour {
     }
 
     protected override void Moving() {
-        this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
-        enemyPosition = this.gameObject.transform.position;
-        if (!isRightDirection && enemyPosition.x < player.transform.position.x - 3 || isRightDirection && enemyPosition.x > player.transform.position.x + 3) {
-            enemySpeed *= -1;
-            isRightDirection = !isRightDirection;
+        if (player != null) {
+            this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
+            enemyPosition = this.gameObject.transform.position;
+            if (!isRightDirection && enemyPosition.x < player.transform.position.x - 3 || isRightDirection && enemyPosition.x > player.transform.position.x + 3) {
+                enemySpeed *= -1;
+                isRightDirection = !isRightDirection;
+            }
         }
     }
 
@@ -61,8 +63,8 @@ public class BossBehavior : EnemyBehaviour {
             actualTime -= Time.deltaTime;
     }
 
-    public override void GetDamage(int damage) {
-        base.GetDamage(damage);
+    public override void GetDamage(int damage, Vector2 bossPosition) {
+        base.GetDamage(damage, bossPosition);
 
         float healthFract = HP / (float)maxHP;
         if (healthFract > 0.66f) {
@@ -76,6 +78,10 @@ public class BossBehavior : EnemyBehaviour {
         }
 
         healthSprite.color = Color.red;
+    }
+
+    protected override void EnemyIsDead(Vector2 position) {
+        bonusController.RandBonus(100, position);
     }
 
     public override void ActivateEnemy(bool isActive, bool isBoss) {

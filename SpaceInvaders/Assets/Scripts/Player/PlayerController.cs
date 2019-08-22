@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GameObject playerBullet;
+    private Vector3 playerBulletsStartPos;
     private Vector3 spaceshipPosition;
     private Vector3 startPosition;
+
+    
 
     // Start is called before the first frame update
     private void Start() {
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour {
         SpeedBulletMod = 0;
         spaceshipPosition = this.gameObject.transform.position;
         startPosition = spaceshipPosition;
+        playerBulletsStartPos = playerBullet.transform.position;
     }
 
     // Update is called once per frame
@@ -61,6 +65,20 @@ public class PlayerController : MonoBehaviour {
                 item.BulletSpeed = SpeedBulletMod * -1 - 0.1f;
             }      
         }
+    }
+
+    public void DestroyBullets() {
+        BulletBase[] bullets = playerBullet.GetComponentsInChildren<BulletBase>();
+        for (int i = 1; i < bullets.Length; i++) {
+            Destroy(bullets[i].gameObject);
+        }
+
+        playerBullet.transform.position = playerBulletsStartPos;
+        foreach (var item in bullets) {
+            item.transform.position = Vector3.zero;
+        }
+        //
+        SpeedBulletMod = 0;
     }
 
     public void SetStartPosition() {

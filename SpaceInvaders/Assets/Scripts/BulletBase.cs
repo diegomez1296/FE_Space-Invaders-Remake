@@ -6,6 +6,8 @@ public class BulletBase : MonoBehaviour {
 
     [SerializeField]
     private PlayerBehaviour player;
+    [SerializeField]
+    private BonusController bonusController;
 
     [SerializeField]
     private float bulletSpeed;
@@ -27,7 +29,7 @@ public class BulletBase : MonoBehaviour {
         if(this.gameObject.activeSelf) 
         {
             Moving();
-            if(isAimBullet)
+            if(isAimBullet && GameController.GameIsRunning)
                 Moving2();
             DestroyMoment();
         }
@@ -38,9 +40,8 @@ public class BulletBase : MonoBehaviour {
         this.gameObject.transform.Translate(new Vector3(0, 1, 0) * bulletSpeed );
     }
     private void Moving2() {
-
-        aimDirection = (player.transform.position - this.transform.position).normalized * -bulletSpeed * 0.5f;
-        this.gameObject.transform.Translate(aimDirection);
+            aimDirection = (player.transform.position - this.transform.position).normalized * -bulletSpeed * 0.5f;
+            this.gameObject.transform.Translate(aimDirection);
     }
 
     private void DestroyMoment() 
@@ -52,13 +53,13 @@ public class BulletBase : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (this.gameObject.activeSelf) {
             if (collision.GetComponent<PlayerController>() && !IsPlayerBullet) {
-                player.GetDamage(bulletDamage);
+                player.GetDamage(bulletDamage, Vector2.zero);
                 Destroy(this.gameObject);
             }
 
             if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
                 var enemy = collision.GetComponent<EnemyBehaviour>();
-                enemy.GetDamage(bulletDamage);
+                enemy.GetDamage(bulletDamage, enemy.transform.position);
                 Destroy(this.gameObject);
                 player.AddScore(enemy.IsBoss);
                 player.CheckLevelUI();

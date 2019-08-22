@@ -5,7 +5,7 @@
 + Boss
 + new buttons in menu
 + save for options
-- Bonuses (HP, double weapon)
++ Bonuses (HP, double weapon)
 #
 -Save
 -Ship Update

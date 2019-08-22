@@ -38,9 +38,9 @@ public class EnemyBehaviour : CharacterBase {
         if (isShooting) Shooting();
     }
 
-    public override void GetDamage(int damage) {
+    public override void GetDamage(int damage, Vector2 enemyPosition) {
         if (isMortal) {
-            base.GetDamage(damage);
+            base.GetDamage(damage, enemyPosition);
             if (HP <= 0) {
                 GameController.AddEnemyKills();
                 slider.value++;
@@ -110,5 +110,9 @@ public class EnemyBehaviour : CharacterBase {
             HP = GameController.GameLevel + GameController.GameLevel;
         else
             HP = (GameController.GameLevel / 5) + 1;
-        }
+    }
+
+    protected override void EnemyIsDead(Vector2 position) {
+        bonusController.RandBonus(10, position);
+    }
 }

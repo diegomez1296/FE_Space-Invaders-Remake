@@ -75,10 +75,7 @@ public class AplicationController : MonoBehaviour
     }
 
     public void ClearHighScores() {
-        if (File.Exists(Path)) {
-            File.WriteAllText(Path, "");
-        }
-
+        StartCoroutine(ClearAllScores());
         ClearScoreRecords();
     }
 
@@ -150,5 +147,13 @@ public class AplicationController : MonoBehaviour
         var sortedlist = listOfPlayerScores.OrderByDescending(x => x.Score).ToList();
 
         return sortedlist;
+    }
+
+    private IEnumerator ClearAllScores() {
+        yield return null;
+
+        if (File.Exists(Path)) {
+            File.WriteAllText(Path, "");
+        }
     }
 }
