@@ -21,6 +21,7 @@ public class EnemyBehaviour : CharacterBase {
     protected GameObject enemyBullet;
     [SerializeField]
     protected Slider slider;
+    protected bool isRightDirection;
 
     protected Vector3 enemyPosition;
     protected float actualTime;
@@ -29,6 +30,7 @@ public class EnemyBehaviour : CharacterBase {
     protected virtual void Start() {
         actualTime = ShootTime();
         IsBoss = false;
+        isRightDirection = true;
     }
 
     protected void FixedUpdate() {
@@ -62,8 +64,10 @@ public class EnemyBehaviour : CharacterBase {
     protected virtual void Moving() {
         this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
         enemyPosition = this.gameObject.transform.position;
-        if (enemyPosition.x > 10 || enemyPosition.x < -10)
+        if (enemyPosition.x > 10 || enemyPosition.x < -10) {
             enemySpeed *= -1;
+            isRightDirection = !isRightDirection;
+        }
     }
 
     protected float ShootTime() {
@@ -103,7 +107,7 @@ public class EnemyBehaviour : CharacterBase {
         isShooting = isActive;
 
         if (isBoss)
-            HP = GameController.GameLevel;
+            HP = GameController.GameLevel + GameController.GameLevel;
         else
             HP = (GameController.GameLevel / 5) + 1;
         }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class BossBehavior : EnemyBehaviour {
 
     [SerializeField]
+    private PlayerBehaviour player;
+    [SerializeField]
     private SpriteRenderer healthSprite;
     private int maxHP;
 
@@ -36,8 +38,12 @@ public class BossBehavior : EnemyBehaviour {
     }
 
     protected override void Moving() {
-        base.Moving();
-        //https://youtu.be/rhoQd6IAtDo
+        this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
+        enemyPosition = this.gameObject.transform.position;
+        if (!isRightDirection && enemyPosition.x < player.transform.position.x - 3 || isRightDirection && enemyPosition.x > player.transform.position.x + 3) {
+            enemySpeed *= -1;
+            isRightDirection = !isRightDirection;
+        }
     }
 
     protected override void Shooting() {

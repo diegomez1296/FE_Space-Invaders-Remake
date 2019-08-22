@@ -2,7 +2,7 @@
 - Formation movement
 - Bounds
 + Score (nickname in menu)
-- Boss
++ Boss
 + new buttons in menu
 + save for options
 - Bonuses (HP, double weapon)

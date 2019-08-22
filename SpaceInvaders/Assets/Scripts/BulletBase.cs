@@ -15,18 +15,32 @@ public class BulletBase : MonoBehaviour {
     [SerializeField]
     private bool isPlayerBullet;
     public bool IsPlayerBullet { get { return isPlayerBullet; } }
+    //AIM
+    [SerializeField]
+    private bool isAimBullet;
+    public bool IsAimBullet { get { return isAimBullet; } set { isAimBullet = value; } }
+
+    private Vector2 aimDirection;
+
 
     private void FixedUpdate() {
         if(this.gameObject.activeSelf) 
         {
             Moving();
+            if(isAimBullet)
+                Moving2();
             DestroyMoment();
         }
     }
 
     private void Moving() 
     {
-        this.gameObject.transform.Translate(new Vector3(0, 1, 0) * bulletSpeed);
+        this.gameObject.transform.Translate(new Vector3(0, 1, 0) * bulletSpeed );
+    }
+    private void Moving2() {
+
+        aimDirection = (player.transform.position - this.transform.position).normalized * -bulletSpeed * 0.5f;
+        this.gameObject.transform.Translate(aimDirection);
     }
 
     private void DestroyMoment() 
