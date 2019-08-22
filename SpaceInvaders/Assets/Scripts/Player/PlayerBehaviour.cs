@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase {
 
-    [SerializeField]
-    private UIController ui;
+    public UIController ui;
     [SerializeField]
     private GameObject shield;
 
@@ -57,6 +56,4 @@ public class PlayerBehaviour : CharacterBase {
         yield return new WaitForSeconds(shieldTime);
         shield.SetActive(false);
     }
-
-    
 }

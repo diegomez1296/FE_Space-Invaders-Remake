@@ -19,8 +19,9 @@ public class GameController : MonoBehaviour {
     public List<GameObject> listOfEnemy;
     [SerializeField]
     private WaveController waveController;
-
-    //GL^2 * 50
+    //EnemyFormations
+    private EnemyFormationController enemyFormationController;
+    private bool[] wasChangeFormation;
 
     void Awake() {
         GameLevel = 1;
@@ -35,6 +36,8 @@ public class GameController : MonoBehaviour {
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene("Menu");
+
+        enemyFormationController.CheckFormations(new int[] { 10, 20, 30}, -7, 4, 1.5f, -1);
     }
 
     public static void AddEnemyKills() {
@@ -48,12 +51,11 @@ public class GameController : MonoBehaviour {
 
         bool time4NewWave = true;
 
-        foreach (var item in listOfEnemy) {
+        foreach (var item in listOfEnemy)
             if (item != null) {
                 time4NewWave = false;
                 break;
             }
-        }
 
         if(time4NewWave)
             SetNewWave();
@@ -63,22 +65,30 @@ public class GameController : MonoBehaviour {
         StartCoroutine(ActivateNewWave(waveController.Wave+1));
     }
 
-    private void InitEnemiesWave() {
+    private void InitEnemiesWave(EnemyFormations formations) {
 
-        float x = -7;
-        float y = 4;
         listOfEnemy.Clear();
-        for (int j = 0; j < 4; j++) {
 
-            for (int i = 0; i < 10; i++) {
-                var enemyCopy = Instantiate(enemy, enemy.transform.parent);
-                enemyCopy.transform.position = new Vector3(x, y, 0);
+        switch (formations) {
+            case EnemyFormations.F4_10:
+                enemyFormationController.SetStartFormation(4, 10, -7, 4, 1.5f, -1);
+                break;
+            case EnemyFormations.F5_8:
+                enemyFormationController.SetStartFormation(5, 8, -7, 4, 1.5f, -1);
+                break;
+        }
+    }
 
-                x += 1.5f;
-                listOfEnemy.Add(enemyCopy);
-            }
-            x = -7;
-            y -= 1f;
+    private EnemyFormations RandStartFormation() {
+
+        int randValue = Random.Range(0, 2);
+        switch (randValue) {
+            case 0:
+                return EnemyFormations.F4_10;
+            case 1:
+                return EnemyFormations.F5_8;
+            default:
+                return EnemyFormations.F4_10;
         }
     }
 
@@ -109,9 +119,11 @@ public class GameController : MonoBehaviour {
 
     private IEnumerator ActivateNewWave(int waveNumber)
     {
+        wasChangeFormation = new bool[3];
+        enemyFormationController = new EnemyFormationController(enemy, listOfEnemy, wasChangeFormation);
         playerController.IsShooting = false;
         waveController.ShowWaveText();
-        if (waveNumber % 3 != 0) InitEnemiesWave();
+        if (waveNumber % 3 != 0) InitEnemiesWave(RandStartFormation());
         else InitBoss();
         yield return new WaitForSeconds(3f);
         waveController.HideWaveText();

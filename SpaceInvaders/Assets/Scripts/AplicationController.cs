@@ -31,6 +31,11 @@ public class AplicationController : MonoBehaviour
         LoadFile();
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Return))
+            LoadScene(1);
+    }
+
     private void OnLevelWasLoaded() {
         SetControlImage();
         inputNickName.text = GameController.NickName;

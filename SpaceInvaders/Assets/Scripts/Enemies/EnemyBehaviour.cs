@@ -111,6 +111,4 @@ public class EnemyBehaviour : CharacterBase {
         else
             HP = (GameController.GameLevel / 5) + 1;
         }
-    
-
 }

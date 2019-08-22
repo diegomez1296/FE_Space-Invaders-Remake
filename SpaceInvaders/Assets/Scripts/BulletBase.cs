@@ -56,14 +56,6 @@ public class BulletBase : MonoBehaviour {
                 Destroy(this.gameObject);
             }
 
-            //if (collision.GetComponent<BossBehavior>() && IsPlayerBullet) {
-            //    var enemy = collision.GetComponent<BossBehavior>();
-            //    enemy.GetDamage(bulletDamage);
-            //    Destroy(this.gameObject);
-            //    player.AddScore(true);
-            //    player.CheckLevelUI();
-            //}
-
             if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
                 var enemy = collision.GetComponent<EnemyBehaviour>();
                 enemy.GetDamage(bulletDamage);

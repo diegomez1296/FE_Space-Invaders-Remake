@@ -1,4 +1,4 @@
-- Random Formation
++ Random Formation
 - Formation movement
 - Bounds
 + Score (nickname in menu)

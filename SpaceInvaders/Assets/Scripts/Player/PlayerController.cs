@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool IsShooting { get; set; }
     public bool IsMoving { get; set; }
+    public float SpeedBulletMod { get; set; }
 
     [SerializeField]
     private float spaceshipSpeed;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     private void Start() {
         IsMoving = true;
         IsShooting = true;
+        SpeedBulletMod = 0;
         spaceshipPosition = this.gameObject.transform.position;
         startPosition = spaceshipPosition;
     }
@@ -54,6 +56,10 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
             var copyBullet = Instantiate(playerBullet, spaceshipPosition, new Quaternion(0, 0, 180, 1));
             copyBullet.SetActive(true);
+
+            foreach (var item in playerBullet.GetComponentsInChildren<BulletBase>()) {
+                item.BulletSpeed = SpeedBulletMod * -1 - 0.1f;
+            }      
         }
     }
 
