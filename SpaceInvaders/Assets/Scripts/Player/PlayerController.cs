@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    private float maxX = 10.0f, minX = -10.0f, maxY = 7.0f, minY = -7.0f;
+    private float maxPositionX;
+    private float minPositionX;
+    private float minPositionY; 
+    private float maxPositionY; 
 
     public bool IsShooting { get; set; }
     public bool IsMoving { get; set; }
@@ -29,6 +32,11 @@ public class PlayerController : MonoBehaviour {
         spaceshipPosition = this.gameObject.transform.position;
         startPosition = spaceshipPosition;
         playerBulletsStartPos = playerBullet.transform.position;
+
+        maxPositionX = GameController.ResMaxX - 0.34f;
+        minPositionX = GameController.ResMinX + 0.34f;
+        maxPositionY = GameController.ResMaxY;
+        minPositionY = GameController.ResMinY;
     }
 
     // Update is called once per frame
@@ -43,15 +51,15 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Moving() {
-        if (!AplicationController.isMouseControl) {
+        if (!ApplicationController.isMouseControl) {
             spaceshipPosition.x += Input.GetAxis("Horizontal") * spaceshipSpeed;
             spaceshipPosition.y += Input.GetAxis("Vertical") * spaceshipSpeed;
         }
         else
             spaceshipPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) * (spaceshipSpeed  + 0.2f);
 
-        spaceshipPosition.x = Mathf.Clamp(spaceshipPosition.x, minX, maxX);
-        spaceshipPosition.y = Mathf.Clamp(spaceshipPosition.y, minY, maxY);
+        spaceshipPosition.x = Mathf.Clamp(spaceshipPosition.x, minPositionX, maxPositionX);
+        spaceshipPosition.y = Mathf.Clamp(spaceshipPosition.y, minPositionY, maxPositionY);
 
         this.gameObject.transform.position = spaceshipPosition;
     }

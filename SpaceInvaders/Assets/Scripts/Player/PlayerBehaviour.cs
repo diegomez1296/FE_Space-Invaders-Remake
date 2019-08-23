@@ -29,11 +29,11 @@ public class PlayerBehaviour : CharacterBase {
                 ui.ActivateGameOverText();
                 GameController.GameIsRunning = false;
                 if (GameController.NickName != "")
-                    AplicationController.SaveScore(new PlayerScore(GameController.NickName, GameController.GameLevel+"", ui.Score.score+""));
+                    ApplicationController.SaveScore(new PlayerScore(GameController.NickName, GameController.GameLevel+"", ui.Score.score+""));
             }
             else {
                 this.GetComponent<PlayerController>().SetStartPosition();
-                StartCoroutine(ActivateShield(3.0f));
+                ActivateShield(3.0f);
             }
         }
     }
@@ -54,14 +54,19 @@ public class PlayerBehaviour : CharacterBase {
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.GetComponent<EnemyBehaviour>()) {
-            shield.SetActive(false);
-            collision.GetComponent<EnemyBehaviour>().GetDamage(1, Vector2.zero);
-            GetDamage(1, Vector2.zero);
+        if (!shield.activeSelf) {
+            if (collision.GetComponent<EnemyBehaviour>()) {
+                //shield.SetActive(false);
+                collision.GetComponent<EnemyBehaviour>().GetDamage(1, Vector2.zero);
+                GetDamage(1, Vector2.zero);
+            }
         }
     }
+    public void ActivateShield(float shieldTime) {
+        StartCoroutine(CoActivateShield(shieldTime));
+    }
 
-    private IEnumerator ActivateShield(float shieldTime) {
+    private IEnumerator CoActivateShield(float shieldTime) {
         shield.SetActive(true);
         yield return new WaitForSeconds(shieldTime);
         shield.SetActive(false);

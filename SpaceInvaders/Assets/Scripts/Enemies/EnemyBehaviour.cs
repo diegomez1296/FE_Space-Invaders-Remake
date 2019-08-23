@@ -23,6 +23,9 @@ public class EnemyBehaviour : CharacterBase {
     protected Slider slider;
     protected bool isRightDirection;
 
+    private float maxPositionX;
+    private float minPositionX;
+
     protected Vector3 enemyPosition;
     protected float actualTime;
 
@@ -31,6 +34,8 @@ public class EnemyBehaviour : CharacterBase {
         actualTime = ShootTime();
         IsBoss = false;
         isRightDirection = true;
+        maxPositionX = GameController.ResMaxX + 0.34f;
+        minPositionX = GameController.ResMinX - 0.34f;
     }
 
     protected void FixedUpdate() {
@@ -64,7 +69,7 @@ public class EnemyBehaviour : CharacterBase {
     protected virtual void Moving() {
         this.gameObject.transform.Translate(new Vector3(3.0f, 0, 0) * enemySpeed);
         enemyPosition = this.gameObject.transform.position;
-        if (enemyPosition.x > 10 || enemyPosition.x < -10) {
+        if (enemyPosition.x > maxPositionX || enemyPosition.x < minPositionX) {
             enemySpeed *= -1;
             isRightDirection = !isRightDirection;
         }

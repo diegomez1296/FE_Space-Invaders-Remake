@@ -17,8 +17,14 @@ public class BonusBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject bullet;
 
+
+    private void Start() {
+        InvokeRepeating("DestroyMoment", 10, 10);
+    }
+
     private void FixedUpdate() {
-        if(this.gameObject.activeSelf)
+
+        if (this.gameObject.activeSelf)
             this.gameObject.transform.Translate(new Vector3(0, 1, 0) * -0.05f);
     }
     private void BonusEffect() {
@@ -60,6 +66,11 @@ public class BonusBehaviour : MonoBehaviour
             item.transform.position = new Vector2(x, 0);
             x -= 1;
         }
+    }
+
+    private void DestroyMoment() {
+            if (this.gameObject.activeSelf && this.gameObject.transform.position.y < -10)
+                Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

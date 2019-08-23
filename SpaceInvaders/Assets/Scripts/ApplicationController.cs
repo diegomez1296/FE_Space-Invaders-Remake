@@ -9,7 +9,7 @@ using System;
 using System.Text;
 using System.Linq;
 
-public class AplicationController : MonoBehaviour
+public class ApplicationController : MonoBehaviour
 {
     public static bool isMouseControl = false;
     [SerializeField]
@@ -107,7 +107,7 @@ public class AplicationController : MonoBehaviour
 
     public static void SaveScore(PlayerScore playerScore) {
 
-        if (File.Exists(Path)) {
+        if (File.Exists(Path) && playerScore.Score != 0) {
             fileText.Append(playerScore.ToString());
             string write = fileText.ToString();
             File.WriteAllText(Path, write);

@@ -1,6 +1,6 @@
 + Random Formation
-- Formation movement
-- Bounds
++ Formation movement
++ Bounds
 + Score (nickname in menu)
 + Boss
 + new buttons in menu

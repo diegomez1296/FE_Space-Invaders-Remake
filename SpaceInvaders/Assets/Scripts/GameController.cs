@@ -10,6 +10,12 @@ public class GameController : MonoBehaviour {
     public static int EnemyKills;
     public static bool GameIsRunning;
 
+    //Resolution
+    public static float ResMinX;
+    public static float ResMaxX;
+    public static float ResMinY = -4.5f;
+    public static float ResMaxY = 4.5f;
+
     [SerializeField]
     private PlayerController playerController;
     [SerializeField]
@@ -28,6 +34,8 @@ public class GameController : MonoBehaviour {
         GameLevel = 1;
         EnemyKills = 0;
         GameIsRunning = true;
+        ResMinX = 0 - Camera.main.aspect * 5;
+        ResMaxX = 0 + Camera.main.aspect * 5;
     }
 
     private void Start() {
@@ -36,9 +44,16 @@ public class GameController : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             SceneManager.LoadScene("Menu");
+            ApplicationController.SaveScore(new PlayerScore(NickName, GameLevel + "", playerController.GetComponent<PlayerBehaviour>().ui.Score.score + ""));
+        }
 
+
+        if (Input.GetKeyDown(KeyCode.F2)) {
+            SceneManager.LoadScene("Game");
+            ApplicationController.SaveScore(new PlayerScore(NickName, GameLevel + "", playerController.GetComponent<PlayerBehaviour>().ui.Score.score + ""));
+        }
         //enemyFormationController.CheckFormations(new int[] { 10, 20, 30}, -7, 4, 1.5f, -1);
     }
 
@@ -127,11 +142,12 @@ public class GameController : MonoBehaviour {
         waveController.ShowWaveText();
         if (waveNumber % 3 != 0) InitEnemiesWave(RandStartFormation());
         else InitBoss();
+        playerController.GetComponent<PlayerBehaviour>().ActivateShield(3f);
         yield return new WaitForSeconds(3f);
+        enemy.GetComponentInParent<EnterToScene>().GoToScene();
         waveController.HideWaveText();
         if (waveNumber % 3 != 0) ActivateEnemies(false);
         else ActivateEnemies(true);
         playerController.IsShooting = true;
-
     }
 }
