@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour {
     [HideInInspector]
     public List<GameObject> listOfEnemy;
     [SerializeField]
-    private WaveController waveController;
+    private UIController uIController;
     //EnemyFormations
     private EnemyFormationController enemyFormationController;
     private bool[] wasChangeFormation;
@@ -39,20 +39,18 @@ public class GameController : MonoBehaviour {
     }
 
     private void Start() {
-        StartCoroutine(ActivateNewWave(waveController.Wave+1)); //Wave+1
+        StartCoroutine(ActivateNewWave(uIController.Wave.Wave+1)); //Wave+1
         InvokeRepeating("CheckEnemies", 5.0f, 5.0f);
     }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             SceneManager.LoadScene("Menu");
-            ApplicationController.SaveScore(new PlayerScore(NickName, GameLevel + "", playerController.GetComponent<PlayerBehaviour>().ui.Score.score + ""));
         }
 
 
         if (Input.GetKeyDown(KeyCode.F2)) {
             SceneManager.LoadScene("Game");
-            ApplicationController.SaveScore(new PlayerScore(NickName, GameLevel + "", playerController.GetComponent<PlayerBehaviour>().ui.Score.score + ""));
         }
         //enemyFormationController.CheckFormations(new int[] { 10, 20, 30}, -7, 4, 1.5f, -1);
     }
@@ -79,7 +77,7 @@ public class GameController : MonoBehaviour {
     }
     private void SetNewWave()
     {
-        StartCoroutine(ActivateNewWave(waveController.Wave+1));
+        StartCoroutine(ActivateNewWave(uIController.Wave.Wave+1));
     }
 
     private void InitEnemiesWave(EnemyFormations formations) {
@@ -139,13 +137,13 @@ public class GameController : MonoBehaviour {
         wasChangeFormation = new bool[3];
         enemyFormationController = new EnemyFormationController(enemy, listOfEnemy, wasChangeFormation);
         playerController.IsShooting = false;
-        waveController.ShowWaveText();
+        uIController.Wave.ShowWaveText();
         if (waveNumber % 3 != 0) InitEnemiesWave(RandStartFormation());
         else InitBoss();
         playerController.GetComponent<PlayerBehaviour>().ActivateShield(3f);
         yield return new WaitForSeconds(3f);
         enemy.GetComponentInParent<EnterToScene>().GoToScene();
-        waveController.HideWaveText();
+        uIController.Wave.HideWaveText();
         if (waveNumber % 3 != 0) ActivateEnemies(false);
         else ActivateEnemies(true);
         playerController.IsShooting = true;

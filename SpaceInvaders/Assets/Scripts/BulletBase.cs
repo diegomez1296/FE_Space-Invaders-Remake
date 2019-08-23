@@ -22,8 +22,16 @@ public class BulletBase : MonoBehaviour {
     private bool isAimBullet;
     public bool IsAimBullet { get { return isAimBullet; } set { isAimBullet = value; } }
 
-    private Vector2 aimDirection;
+    [SerializeField]
+    private bool isAimPlayerBullet;
+    public bool IsAimPlayerBullet { get { return isAimPlayerBullet; } set { isAimPlayerBullet = value; } }
 
+    private Vector2 aimDirection;
+    private Vector2 aimDirectionPlayer;
+
+    //Rocket Effect
+    [SerializeField]
+    private GameObject GameBox;
 
     private void FixedUpdate() {
         if(this.gameObject.activeSelf) 
@@ -31,6 +39,8 @@ public class BulletBase : MonoBehaviour {
             Moving();
             if(isAimBullet && GameController.GameIsRunning)
                 Moving2();
+            if (isAimPlayerBullet && GameController.GameIsRunning)
+                MovingForAimPlayerBullet();
             DestroyMoment();
         }
     }
@@ -44,6 +54,12 @@ public class BulletBase : MonoBehaviour {
             this.gameObject.transform.Translate(aimDirection);
     }
 
+    private void MovingForAimPlayerBullet() {
+        aimDirectionPlayer = (Camera.main.transform.position - this.transform.position).normalized * bulletSpeed;
+        this.gameObject.transform.Translate(aimDirectionPlayer);
+        StartCoroutine(PlayerRocketExposion());
+    }
+
     private void DestroyMoment() 
     {
         if (this.gameObject.transform.position.y > 10 || this.gameObject.transform.position.y < -10)
@@ -52,12 +68,12 @@ public class BulletBase : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (this.gameObject.activeSelf) {
-            if (collision.GetComponent<PlayerController>() && !IsPlayerBullet) {
+            if (collision.GetComponent<PlayerController>() && !isPlayerBullet) {
                 player.GetDamage(bulletDamage, Vector2.zero);
                 Destroy(this.gameObject);
             }
 
-            if (collision.GetComponent<EnemyBehaviour>() && IsPlayerBullet) {
+            if (collision.GetComponent<EnemyBehaviour>() && isPlayerBullet && !isAimPlayerBullet) {
                 var enemy = collision.GetComponent<EnemyBehaviour>();
                 enemy.GetDamage(bulletDamage, enemy.transform.position);
                 Destroy(this.gameObject);
@@ -65,5 +81,15 @@ public class BulletBase : MonoBehaviour {
                 player.CheckLevelUI();
             }
         }
+    }
+
+    private IEnumerator PlayerRocketExposion() {
+        yield return new WaitForSeconds(1);
+
+        var enemies = GameBox.GetComponentsInChildren<EnemyBehaviour>();
+        foreach (var item in enemies) {
+            item.GetDamage(5, item.transform.position);
+        }
+        Destroy(this.gameObject);
     }
 }

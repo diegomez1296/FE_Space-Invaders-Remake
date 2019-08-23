@@ -12,6 +12,7 @@ using System.Linq;
 public class ApplicationController : MonoBehaviour
 {
     public static bool isMouseControl = false;
+    public static bool canOpenHighScorePanel = false;
     [SerializeField]
     private GameObject highScorePanel;
     [SerializeField]
@@ -34,10 +35,15 @@ public class ApplicationController : MonoBehaviour
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Return))
             LoadScene(1);
+
+        if (Input.GetKeyDown(KeyCode.Escape) && highScorePanel.activeSelf)
+            highScorePanel.SetActive(false);
     }
 
     private void OnLevelWasLoaded() {
         SetControlImage();
+        if (canOpenHighScorePanel)
+            HighScoresClick();
         inputNickName.text = GameController.NickName;
         Cursor.visible = true;
     }
@@ -48,11 +54,10 @@ public class ApplicationController : MonoBehaviour
         {
             case 0:
                 SceneManager.LoadScene("Menu");
-                SetControlImage();
-                Cursor.visible = true;
                 break;
             case 1:
                 SceneManager.LoadScene("Game");
+                highScorePanel.SetActive(false);
                 GameController.NickName = ValidateNickName();
                 Cursor.visible = false;
                 break;
@@ -69,7 +74,7 @@ public class ApplicationController : MonoBehaviour
     public void HighScoresClick() {
 
         ClearScoreRecords();
-
+        canOpenHighScorePanel = false;
         highScorePanel.SetActive(true);
         highScorePanel.GetComponentInChildren<ScoreBoxController>().SetHighScores(GetSortedListOfPlayerScores());
     }

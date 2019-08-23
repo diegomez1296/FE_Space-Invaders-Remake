@@ -9,7 +9,10 @@ public class PlayerScore : MonoBehaviour, IComparer<int> {
     public int Score { get; set; }
 
     public PlayerScore(string username, string level, string score) {
-        this.Username = username;
+        if (username != "")
+            this.Username = username;
+        else
+            this.Username = "<Anonim>";
         this.Level = level;
         this.Score = int.Parse(score);
     }

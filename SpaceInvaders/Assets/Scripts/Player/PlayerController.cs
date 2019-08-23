@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GameObject playerBullet;
+    [SerializeField]
+    private GameObject playerRocket;
+    public int rocketAmount = 10;
+
     private Vector3 playerBulletsStartPos;
     private Vector3 spaceshipPosition;
     private Vector3 startPosition;
@@ -47,7 +51,7 @@ public class PlayerController : MonoBehaviour {
     }
     private void Update()
     {
-        if (IsShooting) Shooting();
+        if (IsShooting) { Shooting(); EnableRocket(); }
     }
 
     private void Moving() {
@@ -72,6 +76,20 @@ public class PlayerController : MonoBehaviour {
             foreach (var item in playerBullet.GetComponentsInChildren<BulletBase>()) {
                 item.BulletSpeed = SpeedBulletMod * -1 - 0.1f;
             }      
+        }
+    }
+
+    private void EnableRocket() {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(1) && rocketAmount > 0) {
+            var copyRacket = Instantiate(playerRocket, spaceshipPosition, new Quaternion(0, 0, 180, 1));
+            copyRacket.SetActive(true);
+            copyRacket.GetComponent<BulletBase>().BulletSpeed = -0.1f;
+            rocketAmount--;
+            //Update ui
+
+
+
+        //
         }
     }
 

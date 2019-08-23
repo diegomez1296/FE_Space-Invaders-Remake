@@ -28,8 +28,8 @@ public class PlayerBehaviour : CharacterBase {
             if (HP <= 0) {
                 ui.ActivateGameOverText();
                 GameController.GameIsRunning = false;
-                if (GameController.NickName != "")
-                    ApplicationController.SaveScore(new PlayerScore(GameController.NickName, GameController.GameLevel+"", ui.Score.score+""));
+                ApplicationController.canOpenHighScorePanel = true;
+                ApplicationController.SaveScore(new PlayerScore(GameController.NickName, GameController.GameLevel+"", ui.Score.score+""));
             }
             else {
                 this.GetComponent<PlayerController>().SetStartPosition();
