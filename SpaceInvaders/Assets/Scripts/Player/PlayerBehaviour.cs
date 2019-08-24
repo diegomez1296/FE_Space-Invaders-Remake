@@ -7,9 +7,7 @@ public class PlayerBehaviour : CharacterBase {
     public UIController ui;
     [SerializeField]
     private GameObject shield;
-
-    public Vector2 offset1;
-    public Vector2 offset2;
+    private int rocketPoints;
 
     private void Start() {
         HP = 3;
@@ -40,10 +38,20 @@ public class PlayerBehaviour : CharacterBase {
 
     public void AddScore(bool isBoss) {
         if (HP > 0) {
-            if (!isBoss)
+            if (!isBoss) {
                 ui.Score.AddScoreValue(GameController.GameLevel);
-            else
-                ui.Score.AddScoreValue(GameController.GameLevel*100);
+                rocketPoints += GameController.GameLevel;
+            }
+            else {
+                ui.Score.AddScoreValue(GameController.GameLevel * 100);
+                rocketPoints += GameController.GameLevel * 100;
+            }
+
+            if(rocketPoints >= 1000) {
+                rocketPoints -= 1000;
+                GetComponent<PlayerController>().RocketAmount += 1;
+                ui.Rocket.UpdateRocketValue(GetComponent<PlayerController>().RocketAmount);
+            }
         }
     }
 
@@ -52,6 +60,13 @@ public class PlayerBehaviour : CharacterBase {
             ui.Level.CheckUILevelValue();
     }
 
+    public void ActivateShield(float shieldTime) {
+        StartCoroutine(CoActivateShield(shieldTime));
+    }
+
+    public void PlayBonusSound() {
+        this.GetComponent<AudioSource>().Play();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!shield.activeSelf) {
@@ -61,9 +76,6 @@ public class PlayerBehaviour : CharacterBase {
                 GetDamage(1, Vector2.zero);
             }
         }
-    }
-    public void ActivateShield(float shieldTime) {
-        StartCoroutine(CoActivateShield(shieldTime));
     }
 
     private IEnumerator CoActivateShield(float shieldTime) {

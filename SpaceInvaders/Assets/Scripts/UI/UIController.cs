@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     public LevelController Level { get; set; }
     public WaveController Wave { get; set; }
     public Slider Slider { get; set; }
+    public RocketController Rocket { get; set; }
     [SerializeField] private TextMeshProUGUI gameOverText;
 
     private void Start()
@@ -21,6 +22,7 @@ public class UIController : MonoBehaviour
         Wave = GetComponentInChildren<WaveController>();
         Slider = GetComponentInChildren<Slider>();
         SetSliderValues(5);
+        Rocket = GetComponentInChildren<RocketController>();
     }
 
     public void SetSliderValues(int maxV)

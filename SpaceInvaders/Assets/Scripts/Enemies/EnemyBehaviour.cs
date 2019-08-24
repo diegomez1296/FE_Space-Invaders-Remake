@@ -59,7 +59,7 @@ public class EnemyBehaviour : CharacterBase {
             var copyEnemyBullet = Instantiate(enemyBullet, enemyPosition, new Quaternion(0, 0, 0, 1));
             copyEnemyBullet.SetActive(true);
             copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
-            copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed -= (GameController.GameLevel * 0.01f);
+            copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed -= (GameController.GameLevel * 0.005f);
             ShootTime();
         }
         else
@@ -86,20 +86,23 @@ public class EnemyBehaviour : CharacterBase {
         switch (option)
         {
             case RandOption.SHOT_TIME:
-                if (GameController.GameLevel >= 10)
-                    return Random.Range(1.0f, 3.0f);
-                else if (GameController.GameLevel >= 5)
-                    return Random.Range(2.0f, 6.0f);
-                else
-                    return Random.Range(3.0f, 9.0f);
+                float randValue = Random.Range(2.0f - (GameController.GameLevel * 0.1f), 6.0f - (GameController.GameLevel * 0.1f));
+                return  randValue >= 1 ? randValue : 1;
+                //if (GameController.GameLevel >= 10)
+                //    return Random.Range(1.0f, 3.0f);
+                //else if (GameController.GameLevel >= 5)
+                //    return Random.Range(2.0f, 6.0f);
+                //else
+                //    return Random.Range(3.0f, 9.0f);
 
             case RandOption.BULLET_SPEED:
-                if (GameController.GameLevel >= 10)
-                    return Random.Range(0.05f, 0.1f);
-                else if (GameController.GameLevel >= 5)
-                    return Random.Range(0, 0.05f);
-                else
-                    return Random.Range(-0.025f, 0.025f);
+                return Random.Range(-0.025f, 0.025f);
+                //if (GameController.GameLevel >= 10)
+                //    return Random.Range(0.05f, 0.1f);
+                //else if (GameController.GameLevel >= 5)
+                //    return Random.Range(0, 0.05f);
+                //else
+                //    return Random.Range(-0.025f, 0.025f);
             default:
                 return 0.0f;
         }     

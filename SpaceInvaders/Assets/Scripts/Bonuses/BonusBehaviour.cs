@@ -76,6 +76,7 @@ public class BonusBehaviour : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.GetComponent<PlayerBehaviour>()) {
             BonusEffect();
+            player.PlayBonusSound();
             Destroy(this.gameObject);
         }
     }

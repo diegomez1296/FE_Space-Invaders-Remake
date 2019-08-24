@@ -77,6 +77,7 @@ public class BulletBase : MonoBehaviour {
                 var enemy = collision.GetComponent<EnemyBehaviour>();
                 enemy.GetDamage(bulletDamage, enemy.transform.position);
                 Destroy(this.gameObject);
+                if(enemy.HP <= 0)
                 player.AddScore(enemy.IsBoss);
                 player.CheckLevelUI();
             }
@@ -90,6 +91,7 @@ public class BulletBase : MonoBehaviour {
         foreach (var item in enemies) {
             item.GetDamage(5, item.transform.position);
         }
+        player.CheckLevelUI();
         Destroy(this.gameObject);
     }
 }

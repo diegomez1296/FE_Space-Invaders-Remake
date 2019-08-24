@@ -18,20 +18,23 @@ public class BossBehavior : EnemyBehaviour {
     protected override float GetRandomValue(RandOption option) {
         switch (option) {
             case RandOption.SHOT_TIME:
-                if (GameController.GameLevel >= 16)
-                    return Random.Range(0.25f, 0.5f);
-                else if (GameController.GameLevel >= 8)
-                    return Random.Range(0.5f, 1.0f);
-                else
-                    return Random.Range(1.0f, 1.5f);
+                float randValue = Random.Range(1.0f - (GameController.GameLevel * 0.2f), 6.0f - (GameController.GameLevel * 0.2f));
+                return randValue >= 0.5f ? randValue : 0.5f;
+                //if (GameController.GameLevel >= 16)
+                //    return Random.Range(0.25f, 0.5f);
+                //else if (GameController.GameLevel >= 8)
+                //    return Random.Range(0.5f, 1.0f);
+                //else
+                //    return Random.Range(1.0f, 1.5f);
 
             case RandOption.BULLET_SPEED:
-                if (GameController.GameLevel >= 16)
-                    return Random.Range(0.1f, 0.15f);
-                else if (GameController.GameLevel >= 8)
-                    return Random.Range(0.05f, 0.1f);
-                else
-                    return Random.Range(0, 0.05f);
+                return Random.Range(0, 0.05f);
+                //if (GameController.GameLevel >= 16)
+                //    return Random.Range(0.1f, 0.15f);
+                //else if (GameController.GameLevel >= 8)
+                //    return Random.Range(0.05f, 0.1f);
+                //else
+                //    return Random.Range(0, 0.05f);
             default:
                 return 0.0f;
         }
@@ -55,7 +58,7 @@ public class BossBehavior : EnemyBehaviour {
             copyEnemyBullet.SetActive(true);
             foreach (var item in copyEnemyBullet.GetComponentsInChildren<BulletBase>()) {
                 item.BulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
-                item.BulletSpeed -= (GameController.GameLevel * 0.01f);
+                item.BulletSpeed -= (GameController.GameLevel * 0.005f);
             }
             ShootTime();
         }

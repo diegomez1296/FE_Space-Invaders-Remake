@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    private float maxPositionX;
-    private float minPositionX;
-    private float minPositionY; 
-    private float maxPositionY; 
-
-    public bool IsShooting { get; set; }
-    public bool IsMoving { get; set; }
-    public float SpeedBulletMod { get; set; }
-
     [SerializeField]
     private float spaceshipSpeed;
 
@@ -20,7 +11,16 @@ public class PlayerController : MonoBehaviour {
     private GameObject playerBullet;
     [SerializeField]
     private GameObject playerRocket;
-    public int rocketAmount = 10;
+
+    public bool IsShooting { get; set; }
+    public bool IsMoving { get; set; }
+    public float SpeedBulletMod { get; set; }
+    public int RocketAmount { get; set; }
+
+    private float maxPositionX;
+    private float minPositionX;
+    private float minPositionY;
+    private float maxPositionY;
 
     private Vector3 playerBulletsStartPos;
     private Vector3 spaceshipPosition;
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
         spaceshipPosition = this.gameObject.transform.position;
         startPosition = spaceshipPosition;
         playerBulletsStartPos = playerBullet.transform.position;
+        RocketAmount = 0;
 
         maxPositionX = GameController.ResMaxX - 0.34f;
         minPositionX = GameController.ResMinX + 0.34f;
@@ -80,16 +81,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void EnableRocket() {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(1) && rocketAmount > 0) {
-            var copyRacket = Instantiate(playerRocket, spaceshipPosition, new Quaternion(0, 0, 180, 1));
-            copyRacket.SetActive(true);
-            copyRacket.GetComponent<BulletBase>().BulletSpeed = -0.1f;
-            rocketAmount--;
-            //Update ui
-
-
-
-        //
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(1)) {
+            if (RocketAmount > 0) {
+                var copyRacket = Instantiate(playerRocket, spaceshipPosition, new Quaternion(0, 0, 180, 1));
+                copyRacket.SetActive(true);
+                copyRacket.GetComponent<BulletBase>().BulletSpeed = -0.1f;
+                RocketAmount--;
+                GetComponent<PlayerBehaviour>().ui.Rocket.UpdateRocketValue(RocketAmount);
+            }
         }
     }
 
