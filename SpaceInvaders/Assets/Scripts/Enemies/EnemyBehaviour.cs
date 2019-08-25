@@ -9,11 +9,11 @@ public class EnemyBehaviour : CharacterBase {
 
     public bool IsBoss { get; set; }
 
-    [SerializeField]
+    [HideInInspector]
     protected bool isMoving;
-    [SerializeField]
+    [HideInInspector]
     protected bool isMortal;
-    [SerializeField]
+    [HideInInspector]
     protected bool isShooting;
     [SerializeField]
     protected float enemySpeed;

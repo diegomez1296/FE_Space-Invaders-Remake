@@ -2473,9 +2473,6 @@ MonoBehaviour:
   explosionEffect: {fileID: 5859271242153488163, guid: 53fb2364457f42f469ec6db92ea55d29,
     type: 3}
   bonusController: {fileID: 1240849144}
-  isMoving: 0
-  isMortal: 0
-  isShooting: 0
   enemySpeed: 0.05
   enemyBullet: {fileID: 1200378541}
   slider: {fileID: 1520652287}
@@ -6443,9 +6440,6 @@ MonoBehaviour:
   explosionEffect: {fileID: 5859271242153488163, guid: 53fb2364457f42f469ec6db92ea55d29,
     type: 3}
   bonusController: {fileID: 1240849144}
-  isMoving: 0
-  isMortal: 0
-  isShooting: 0
   enemySpeed: 0.05
   enemyBullet: {fileID: 2687739604524721169}
   slider: {fileID: 1520652287}
