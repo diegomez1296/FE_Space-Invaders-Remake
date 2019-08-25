@@ -12,13 +12,16 @@ public abstract class CharacterBase : MonoBehaviour
     private Vector3 explosionOffset;
     public int HP { get; set; }
 
-    public virtual void GetDamage(int damage, Vector2 position) {
+    public virtual void GetDamage(int damage, Vector2 position, int percentToExplosion) {
         HP -= damage;
         GameObject explosionFX;
         if (HP <= 0) {
-            explosionFX = Instantiate(explosionEffect, transform.position + explosionOffset, Quaternion.identity) as GameObject;
+            int rand = Random.Range(0, 100);
+            if (rand <= percentToExplosion) {
+                explosionFX = Instantiate(explosionEffect, transform.position + explosionOffset, Quaternion.identity) as GameObject;
+                Destroy(explosionFX, 5.0f);
+            }
             Destroy(this.gameObject);
-            Destroy(explosionFX, 5.0f);
             EnemyIsDead(position);
         }
         else {

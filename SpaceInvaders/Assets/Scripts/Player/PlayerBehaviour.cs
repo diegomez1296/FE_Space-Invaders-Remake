@@ -18,9 +18,9 @@ public class PlayerBehaviour : CharacterBase {
             shield.SetActive(!shield.activeSelf);
     }
 
-    public override void GetDamage(int damage, Vector2 playerPosition) {
+    public override void GetDamage(int damage, Vector2 playerPosition, int percentToExplosion) {
         if (!shield.activeSelf) {
-            base.GetDamage(damage, Vector2.zero);
+            base.GetDamage(damage, Vector2.zero, 100);
             ui.PlayerLifes.CheckPlayerLifes(HP);
             GetComponent<PlayerController>().DestroyBullets();
             if (HP <= 0) {
@@ -72,8 +72,8 @@ public class PlayerBehaviour : CharacterBase {
         if (!shield.activeSelf) {
             if (collision.GetComponent<EnemyBehaviour>()) {
                 //shield.SetActive(false);
-                collision.GetComponent<EnemyBehaviour>().GetDamage(1, Vector2.zero);
-                GetDamage(1, Vector2.zero);
+                collision.GetComponent<EnemyBehaviour>().GetDamage(1, Vector2.zero, 100);
+                GetDamage(1, Vector2.zero, 100);
             }
         }
     }

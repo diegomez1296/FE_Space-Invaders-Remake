@@ -57,7 +57,7 @@ public class BulletBase : MonoBehaviour {
     private void MovingForAimPlayerBullet() {
         aimDirectionPlayer = (Camera.main.transform.position - this.transform.position).normalized * bulletSpeed;
         this.gameObject.transform.Translate(aimDirectionPlayer);
-        StartCoroutine(PlayerRocketExposion());
+        StartCoroutine(PlayerRocketExposion(50));
     }
 
     private void DestroyMoment() 
@@ -69,13 +69,13 @@ public class BulletBase : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (this.gameObject.activeSelf) {
             if (collision.GetComponent<PlayerController>() && !isPlayerBullet) {
-                player.GetDamage(bulletDamage, Vector2.zero);
+                player.GetDamage(bulletDamage, Vector2.zero, 100);
                 Destroy(this.gameObject);
             }
 
             if (collision.GetComponent<EnemyBehaviour>() && isPlayerBullet && !isAimPlayerBullet) {
                 var enemy = collision.GetComponent<EnemyBehaviour>();
-                enemy.GetDamage(bulletDamage, enemy.transform.position);
+                enemy.GetDamage(bulletDamage, enemy.transform.position, 100);
                 Destroy(this.gameObject);
                 if(enemy.HP <= 0)
                 player.AddScore(enemy.IsBoss);
@@ -84,12 +84,12 @@ public class BulletBase : MonoBehaviour {
         }
     }
 
-    private IEnumerator PlayerRocketExposion() {
+    private IEnumerator PlayerRocketExposion(int percentToExplosion) {
         yield return new WaitForSeconds(1);
 
         var enemies = GameBox.GetComponentsInChildren<EnemyBehaviour>();
         foreach (var item in enemies) {
-            item.GetDamage(5, item.transform.position);
+            item.GetDamage(5, item.transform.position, percentToExplosion);
         }
         player.CheckLevelUI();
         Destroy(this.gameObject);

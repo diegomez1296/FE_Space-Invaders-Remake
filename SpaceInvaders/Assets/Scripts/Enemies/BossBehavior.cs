@@ -66,8 +66,8 @@ public class BossBehavior : EnemyBehaviour {
             actualTime -= Time.deltaTime;
     }
 
-    public override void GetDamage(int damage, Vector2 bossPosition) {
-        base.GetDamage(damage, bossPosition);
+    public override void GetDamage(int damage, Vector2 bossPosition, int percentToExplosion) {
+        base.GetDamage(damage, bossPosition, 100);
 
         float healthFract = HP / (float)maxHP;
         if (healthFract > 0.66f) {

@@ -43,9 +43,9 @@ public class EnemyBehaviour : CharacterBase {
         if (isShooting) Shooting();
     }
 
-    public override void GetDamage(int damage, Vector2 enemyPosition) {
+    public override void GetDamage(int damage, Vector2 enemyPosition, int percentToExplosion) {
         if (isMortal) {
-            base.GetDamage(damage, enemyPosition);
+            base.GetDamage(damage, enemyPosition, percentToExplosion);
             if (HP <= 0) {
                 GameController.AddEnemyKills();
                 slider.value++;

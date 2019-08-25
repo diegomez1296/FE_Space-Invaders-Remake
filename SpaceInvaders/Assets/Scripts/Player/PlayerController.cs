@@ -61,10 +61,11 @@ public class PlayerController : MonoBehaviour {
             spaceshipPosition.y += Input.GetAxis("Vertical") * spaceshipSpeed;
         }
         else
-            spaceshipPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) * (spaceshipSpeed  + 0.2f);
+            spaceshipPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         spaceshipPosition.x = Mathf.Clamp(spaceshipPosition.x, minPositionX, maxPositionX);
         spaceshipPosition.y = Mathf.Clamp(spaceshipPosition.y, minPositionY, maxPositionY);
+        spaceshipPosition.z = 0;
 
         this.gameObject.transform.position = spaceshipPosition;
     }
