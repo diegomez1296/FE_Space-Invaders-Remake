@@ -5,12 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
-    private float spaceshipSpeed;
-
-    [SerializeField]
     private GameObject playerBullet;
     [SerializeField]
     private GameObject playerRocket;
+    [SerializeField]
+    private float spaceshipSpeed;
 
     public bool IsShooting { get; set; }
     public bool IsMoving { get; set; }
@@ -26,9 +25,6 @@ public class PlayerController : MonoBehaviour {
     private Vector3 spaceshipPosition;
     private Vector3 startPosition;
 
-    
-
-    // Start is called before the first frame update
     private void Start() {
         IsMoving = true;
         IsShooting = true;
@@ -44,7 +40,6 @@ public class PlayerController : MonoBehaviour {
         minPositionY = GameController.ResMinY;
     }
 
-    // Update is called once per frame
     private void FixedUpdate()
     {
         if (IsMoving) Moving();
@@ -76,7 +71,7 @@ public class PlayerController : MonoBehaviour {
             copyBullet.SetActive(true);
 
             foreach (var item in playerBullet.GetComponentsInChildren<BulletBase>()) {
-                item.BulletSpeed = SpeedBulletMod * -1 - 0.1f;
+                item.bulletSpeed = SpeedBulletMod * -1 - 0.1f;
             }      
         }
     }
@@ -86,7 +81,7 @@ public class PlayerController : MonoBehaviour {
             if (RocketAmount > 0) {
                 var copyRacket = Instantiate(playerRocket, spaceshipPosition, new Quaternion(0, 0, 180, 1));
                 copyRacket.SetActive(true);
-                copyRacket.GetComponent<BulletBase>().BulletSpeed = -0.1f;
+                copyRacket.GetComponent<BulletBase>().bulletSpeed = -0.1f;
                 RocketAmount--;
                 GetComponent<PlayerBehaviour>().ui.Rocket.UpdateRocketValue(RocketAmount);
             }

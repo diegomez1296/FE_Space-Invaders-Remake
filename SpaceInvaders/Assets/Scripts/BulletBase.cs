@@ -9,22 +9,14 @@ public class BulletBase : MonoBehaviour {
     [SerializeField]
     private BonusController bonusController;
 
-    [SerializeField]
-    private float bulletSpeed;
-    public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
+    public float bulletSpeed;
+    public bool isPlayerBullet;
     [SerializeField]
     private int bulletDamage;
-    [SerializeField]
-    private bool isPlayerBullet;
-    public bool IsPlayerBullet { get { return isPlayerBullet; } }
+    
     //AIM
-    [SerializeField]
-    private bool isAimBullet;
-    public bool IsAimBullet { get { return isAimBullet; } set { isAimBullet = value; } }
-
-    [SerializeField]
-    private bool isAimPlayerBullet;
-    public bool IsAimPlayerBullet { get { return isAimPlayerBullet; } set { isAimPlayerBullet = value; } }
+    public bool isAimBullet;
+    public bool isAimPlayerBullet;
 
     private Vector2 aimDirection;
     private Vector2 aimDirectionPlayer;

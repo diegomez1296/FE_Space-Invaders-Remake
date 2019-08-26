@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerLifesController : MonoBehaviour
 {
+    private const int HP_LIMIT = 4;
     private Image[] lifes;
 
     private void Start() {
@@ -14,40 +15,16 @@ public class PlayerLifesController : MonoBehaviour
 
     public void CheckPlayerLifes(int HP) {
 
-        switch(HP) {
-            case 4:
-                lifes[0].gameObject.SetActive(true);
-                lifes[1].gameObject.SetActive(true);
-                lifes[2].gameObject.SetActive(true);
-                lifes[3].gameObject.SetActive(true);
-                break;
-
-            case 3:
-                lifes[0].gameObject.SetActive(true);
-                lifes[1].gameObject.SetActive(true);
-                lifes[2].gameObject.SetActive(true);
-                lifes[3].gameObject.SetActive(false);
-                break;
-            case 2:
-                lifes[0].gameObject.SetActive(true);
-                lifes[1].gameObject.SetActive(true);
-                lifes[2].gameObject.SetActive(false);
-                lifes[3].gameObject.SetActive(false);
-                break;
-            case 1:
-                lifes[0].gameObject.SetActive(true);
-                lifes[1].gameObject.SetActive(false);
-                lifes[2].gameObject.SetActive(false);
-                lifes[3].gameObject.SetActive(false);
-                break;
-            case 0:
-                lifes[0].gameObject.SetActive(false);
-                lifes[1].gameObject.SetActive(false);
-                lifes[2].gameObject.SetActive(false);
-                lifes[3].gameObject.SetActive(false);
-                break;
+        ClearHP();
+        for (int i = 0; i < (HP < HP_LIMIT ? HP : HP_LIMIT); i++) {
+            lifes[i].gameObject.SetActive(true);
         }
+    }
 
+    private void ClearHP() {
+        foreach (var item in lifes) {
+            item.gameObject.SetActive(false);
+        }
     }
 
 }

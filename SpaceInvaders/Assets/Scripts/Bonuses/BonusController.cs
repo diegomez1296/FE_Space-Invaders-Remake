@@ -7,7 +7,6 @@ public class BonusController : MonoBehaviour
     private const int BONUS_AMOUNT = 3;
     private BonusBehaviour[] bonuses;
 
-
     private void Awake() {
         bonuses = GetComponentsInChildren<BonusBehaviour>();
     }

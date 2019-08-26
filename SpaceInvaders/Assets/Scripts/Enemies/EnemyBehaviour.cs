@@ -22,14 +22,12 @@ public class EnemyBehaviour : CharacterBase {
     [SerializeField]
     protected Slider slider;
     protected bool isRightDirection;
+    protected Vector3 enemyPosition;
+    protected float actualTime;
 
     private float maxPositionX;
     private float minPositionX;
 
-    protected Vector3 enemyPosition;
-    protected float actualTime;
-
-    // Start is called before the first frame update
     protected virtual void Start() {
         actualTime = ShootTime();
         IsBoss = false;
@@ -58,8 +56,8 @@ public class EnemyBehaviour : CharacterBase {
         if (actualTime <= 0) {
             var copyEnemyBullet = Instantiate(enemyBullet, enemyPosition, new Quaternion(0, 0, 0, 1));
             copyEnemyBullet.SetActive(true);
-            copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
-            copyEnemyBullet.GetComponent<BulletBase>().BulletSpeed -= (GameController.GameLevel * 0.005f);
+            copyEnemyBullet.GetComponent<BulletBase>().bulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
+            copyEnemyBullet.GetComponent<BulletBase>().bulletSpeed -= (GameController.GameLevel * 0.005f);
             ShootTime();
         }
         else

@@ -57,8 +57,8 @@ public class BossBehavior : EnemyBehaviour {
             var copyEnemyBullet = Instantiate(enemyBullet, enemyPosition, new Quaternion(0, 0, 0, 1));
             copyEnemyBullet.SetActive(true);
             foreach (var item in copyEnemyBullet.GetComponentsInChildren<BulletBase>()) {
-                item.BulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
-                item.BulletSpeed -= (GameController.GameLevel * 0.005f);
+                item.bulletSpeed -= GetRandomValue(RandOption.BULLET_SPEED);
+                item.bulletSpeed -= (GameController.GameLevel * 0.005f);
             }
             ShootTime();
         }
